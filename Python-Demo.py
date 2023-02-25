@@ -17,27 +17,24 @@ for i in os.listdir(hfr_dir):
 
 # %%
 
-#======== Load HFR Data ==========#
-# Choose the file
-file = 'H-005_2022-08-25_CPolCurveEIS_HFR.csv'
-# Load the file
-temp_hfr_df = pd.read_csv(f'{hfr_dir}/{file}')
-temp_hfr_df
+#====== Loop through Folder ======#
+for i, file in enumerate(os.listdir(hfr_dir)):
+    
+    #======== Load HFR Data ==========#
+    temp_hfr_df = pd.read_csv(f'{hfr_dir}/{file}')
 
-#%%
+    #======= Define Variables ========#
+    J = temp_hfr_df['Current Density (A/cm2)']
+    V = temp_hfr_df['Potential (V)']
+    HFR = temp_hfr_df['HFR (Ωcm2)']
 
-#======= Define Variables ========#
-J = temp_hfr_df['Current Density (A/cm2)']
-V = temp_hfr_df['Potential (V)']
-HFR = temp_hfr_df['HFR (Ωcm2)']
+    #====== Perform Calculation ======#
+    V_HFR_free = V - J * HFR
 
-#====== Perform Calculation ======#
-V_HFR_free = V - J * HFR
-
-#%%
-
-#====== Plot Calculation =========#
-plt.semilogx(J, V_HFR_free, 'go', mfc='none')
-plt.xlabel('HFR-free Voltage (V)')
-plt.ylabel('Current Density (A/cm$^2$)')
-plt.grid(alpha=0.35)
+    #====== Plot Calculation =========#
+    plt.semilogx(J, V_HFR_free, 'o', mfc='none', label = file)
+    plt.xlabel('HFR-free Voltage (V)')
+    plt.ylabel('Current Density (A/cm$^2$)')
+    plt.grid(alpha=0.35)
+    plt.legend()
+# %%
