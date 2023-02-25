@@ -8,6 +8,9 @@ import pandas as pd
 # Plotting
 import matplotlib.pyplot as plt
 
+#======== Define Formatting =======#
+markers = ['v', 's', 'd', 'h', 'o']
+
 #%%
 
 #====== Select Directory =========#
@@ -45,7 +48,7 @@ for j, experiment in enumerate(os.listdir(exp_dir)):
 
         #====== Plot Calculation =========#
         plt.figure(experiment)
-        plt.semilogx(J, V_HFR_free, 'o', mfc='none', label = hfr_file)
+        plt.semilogx(J, V_HFR_free, ls = 'none', marker = markers[i], mfc='none', label = hfr_file)
         plt.xlabel('HFR-free Voltage (V)')
         plt.ylabel('Current Density (A/cm$^2$)')
         plt.title(experiment)
