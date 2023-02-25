@@ -11,30 +11,43 @@ import matplotlib.pyplot as plt
 #%%
 
 #====== Select Directory =========#
-hfr_dir = f'../Demo-Repository/Example_HFR_Data'
+exp_dir = f'../Demo-Repository/HFR_Data'
+for i in os.listdir(exp_dir):
+    print(i)
+
+
+#%%
+
+#====== Select Directory =========#
+hfr_dir = f'../Demo-Repository/HFR_Data'
 for i in os.listdir(hfr_dir):
     print(i)
 
 # %%
 
-#====== Loop through Folder ======#
-for i, file in enumerate(os.listdir(hfr_dir)):
-    
-    #======== Load HFR Data ==========#
-    temp_hfr_df = pd.read_csv(f'{hfr_dir}/{file}')
+for j, experiment in enumerate(os.listdir(exp_dir)):
+    #====== Select HFR Directory ====#
+    hfr_dir = f'{exp_dir}/{experiment}'
 
-    #======= Define Variables ========#
-    J = temp_hfr_df['Current Density (A/cm2)']
-    V = temp_hfr_df['Potential (V)']
-    HFR = temp_hfr_df['HFR (Ωcm2)']
+    #====== Loop through Folder ======#
+    for i, hfr_file in enumerate(os.listdir(hfr_dir)):
+        
+        #======== Load HFR Data ==========#
+        temp_hfr_df = pd.read_csv(f'{hfr_dir}/{hfr_file}')
 
-    #====== Perform Calculation ======#
-    V_HFR_free = V - J * HFR
+        #======= Define Variables ========#
+        J = temp_hfr_df['Current Density (A/cm2)']
+        V = temp_hfr_df['Potential (V)']
+        HFR = temp_hfr_df['HFR (Ωcm2)']
 
-    #====== Plot Calculation =========#
-    plt.semilogx(J, V_HFR_free, 'o', mfc='none', label = file)
-    plt.xlabel('HFR-free Voltage (V)')
-    plt.ylabel('Current Density (A/cm$^2$)')
-    plt.grid(alpha=0.35)
-    plt.legend()
-# %%
+        #====== Perform Calculation ======#
+        V_HFR_free = V - J * HFR
+
+        #====== Plot Calculation =========#
+        plt.figure(experiment)
+        plt.semilogx(J, V_HFR_free, 'o', mfc='none', label = hfr_file)
+        plt.xlabel('HFR-free Voltage (V)')
+        plt.ylabel('Current Density (A/cm$^2$)')
+        plt.title(experiment)
+        plt.grid(alpha=0.35)
+        plt.legend()
